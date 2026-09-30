@@ -10,7 +10,9 @@ st.markdown("""
 html,body,[class*="css"]{font-family:Inter,sans-serif}
 .stApp{background:var(--bg);color:#eef5ff}
 header[data-testid="stHeader"]{background:#06152b}
-.block-container{padding-top:1rem;max-width:100%}
+.block-container{padding-top:4.5rem;max-width:100%}
+/* Keep the application heading clear of Streamlit's top bar */
+.app-heading{position:relative;z-index:5;margin-bottom:8px}
 section[data-testid="stSidebar"]{background:#071a33;border-right:1px solid #17365d}
 div[data-testid="stMetric"]{background:linear-gradient(135deg,#0c2445,#0a1e39);border:1px solid var(--border);border-radius:10px;padding:16px;min-height:110px}
 div[data-testid="stMetricLabel"]{color:#c7d7eb}
@@ -52,7 +54,7 @@ with st.sidebar:
 
 x,y,z=st.columns([5.8,1.2,1.5])
 with x:
-    st.markdown("<div style='font-size:25px;font-weight:750'>▣ &nbsp; AI Customer Service Assistant</div><div class='muted'>Smarter support. Faster resolutions. Happier customers.</div>",unsafe_allow_html=True)
+    st.markdown("<div class='app-heading' style='font-size:25px;font-weight:750'>▣ &nbsp; AI Customer Service Assistant</div><div class='muted'>Smarter support. Faster resolutions. Happier customers.</div>",unsafe_allow_html=True)
 with y: st.markdown("<div style='color:#35e4ca;padding-top:8px'>● Live Data Stream</div><div class='muted'>Updated 10:24 AM</div>",unsafe_allow_html=True)
 with z: st.markdown("<div style='text-align:right;padding-top:6px'>🔔 &nbsp; <b>Support Team</b><br/><span class='muted'>iConnect SA</span></div>",unsafe_allow_html=True)
 st.markdown("<hr style='border-color:#183c68'>",unsafe_allow_html=True)
