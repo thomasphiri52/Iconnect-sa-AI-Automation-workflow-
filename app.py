@@ -56,6 +56,53 @@ with x:
 with y: st.markdown("<div style='color:#35e4ca;padding-top:8px'>● Live Data Stream</div><div class='muted'>Updated 10:24 AM</div>",unsafe_allow_html=True)
 with z: st.markdown("<div style='text-align:right;padding-top:6px'>🔔 &nbsp; <b>Support Team</b><br/><span class='muted'>iConnect SA</span></div>",unsafe_allow_html=True)
 st.markdown("<hr style='border-color:#183c68'>",unsafe_allow_html=True)
+if st.session_state.page=="Automation Workflows":
+    st.markdown("<div style='font-size:25px;font-weight:750'>⚡ Automation Workflow Center</div><div class='muted'>Build, test and monitor AI-powered support automations.</div>",unsafe_allow_html=True)
+    st.markdown("<hr style='border-color:#183c68'>",unsafe_allow_html=True)
+    active=sum(1 for w in st.session_state.workflows if w["status"]=="Active")
+    runs=sum(w["runs"] for w in st.session_state.workflows)
+    success=sum(1 for r in st.session_state.automation_logs if r[3]=="Success")
+    avg=round(sum(float(r[4][:-1]) for r in st.session_state.automation_logs)/len(st.session_state.automation_logs),1)
+    m1,m2,m3,m4=st.columns(4)
+    m1.metric("Active Workflows",active)
+    m2.metric("Runs Tracked",runs)
+    m3.metric("Successful Runs",success)
+    m4.metric("Avg. Run Time",f"{avg}s")
+    left,right=st.columns([1.05,1.55],gap="medium")
+    with left:
+        st.markdown("<div class='panel'><div class='title'>➕ Create Automation Workflow</div>",unsafe_allow_html=True)
+        with st.form("create_workflow"):
+            name=st.text_input("Workflow name",placeholder="Customer complaint follow-up")
+            trigger=st.selectbox("Trigger",["New ticket","Priority = High","Customer sentiment = Negative","Scheduled • 17:00","Satisfaction score < 90%"])
+            steps=st.multiselect("Automation steps",["Classify enquiry with AI","Assign support team","Send acknowledgement","Notify supervisor","Create escalation task","Send customer update","Generate summary","Send report"],default=["Classify enquiry with AI","Send acknowledgement"])
+            submitted=st.form_submit_button("Create Workflow",use_container_width=True)
+            if submitted and name and steps:
+                st.session_state.workflows.append({"name":name,"trigger":trigger,"steps":steps,"status":"Active","runs":0})
+                st.success("Workflow created successfully.")
+                st.rerun()
+        st.markdown("</div>",unsafe_allow_html=True)
+    with right:
+        st.markdown("<div class='panel'><div class='title'>▣ Workflow Library</div>",unsafe_allow_html=True)
+        for i,w in enumerate(st.session_state.workflows):
+            st.markdown(f"<div style='border:1px solid #183c68;border-radius:9px;padding:12px;margin:8px 0'><b>{w['name']}</b><span style='float:right;color:#35e4ca'>{w['status']}</span><br/><span class='muted'>Trigger: {w['trigger']} • {w['runs']} runs</span><br/><span class='muted'>Steps: {' → '.join(w['steps'])}</span></div>",unsafe_allow_html=True)
+            b1,b2=st.columns(2)
+            with b1:
+                if st.button("▶ Test",key=f"test_{i}",use_container_width=True):
+                    w["runs"]+=1
+                    st.session_state.automation_logs.insert(0,["Now",w["name"],"TEST-"+str(w["runs"]),"Success","1.6s"])
+                    st.toast("Workflow test completed successfully.")
+                    st.rerun()
+            with b2:
+                if st.button("Pause" if w["status"]=="Active" else "Activate",key=f"toggle_{i}",use_container_width=True):
+                    w["status"]="Paused" if w["status"]=="Active" else "Active"
+                    st.rerun()
+        st.markdown("</div>",unsafe_allow_html=True)
+    st.markdown("<div class='panel'><div class='title'>◷ Execution Monitor</div>",unsafe_allow_html=True)
+    st.dataframe(pd.DataFrame(st.session_state.automation_logs,columns=["Time","Workflow","Reference","Result","Run Time"]),use_container_width=True,hide_index=True)
+    st.markdown("</div>",unsafe_allow_html=True)
+    st.markdown("<div class='panel'><div class='title'>✦ AI Automation Templates</div><div class='muted'>Lead follow-up • Ticket triage • Escalation guard • Daily intelligence report</div></div>",unsafe_allow_html=True)
+    st.stop()
+
 if st.session_state.page!="Dashboard":
     st.markdown(f"<div class='panel'><div class='title'>{st.session_state.page}</div><div class='muted'>Workspace view — use the sidebar to navigate back to Dashboard.</div></div>",unsafe_allow_html=True)
 
