@@ -45,7 +45,7 @@ if "messages" not in st.session_state:
 
 with st.sidebar:
     st.markdown("<div style='font-size:27px;font-weight:800'>🔷 iConnect SA</div><div class='muted'>Connect · Support · Grow</div><br/>",unsafe_allow_html=True)
-    for icon,name in [("🏠","Dashboard"),("♧","Customer Service AI"),("▤","Tickets"),("▢","Live Support"),("🔔","Automated Alerts"),("▥","Reports & Analytics"),("⚙","Settings")]:
+    for icon,name in [("🏠","Dashboard"),("♧","Customer Service AI"),("▤","Tickets"),("▢","Live Support"),("🔔","Automated Alerts"),("⚡","Automation Workflows"),("▥","Reports & Analytics"),("⚙","Settings")]:
         if st.button(f"{icon}   {name}"+("   🔴 3" if name=="Automated Alerts" else ""),key=name,use_container_width=True):
             st.session_state.page=name; st.rerun()
     st.markdown("<div style='height:100px'></div><div class='panel' style='text-align:center;padding:24px 8px'><div style='font-size:38px'>✣</div><br/>Better connections.<br/>A smarter tomorrow.<br/><br/><b>iConnect SA</b></div>",unsafe_allow_html=True)
