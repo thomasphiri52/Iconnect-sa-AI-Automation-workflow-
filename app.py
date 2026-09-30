@@ -23,6 +23,19 @@ div.stButton>button:hover{background:#0d58a4;color:white}
 </style>""", unsafe_allow_html=True)
 
 if "page" not in st.session_state: st.session_state.page="Dashboard"
+if "workflows" not in st.session_state:
+    st.session_state.workflows=[
+        {"name":"New customer enquiry","trigger":"New ticket","steps":["Classify enquiry with AI","Assign support team","Send acknowledgement"],"status":"Active","runs":24},
+        {"name":"High priority escalation","trigger":"Priority = High","steps":["Notify supervisor","Create escalation task","Send customer update"],"status":"Active","runs":11},
+        {"name":"Daily support report","trigger":"Scheduled • 17:00","steps":["Collect ticket metrics","Generate summary","Send report"],"status":"Paused","runs":7}
+    ]
+if "automation_logs" not in st.session_state:
+    st.session_state.automation_logs=[
+        ["10:22 AM","New customer enquiry","INC-587","Success","1.8s"],
+        ["10:18 AM","High priority escalation","INC-585","Success","2.4s"],
+        ["10:00 AM","Daily support report","REPORT-091","Success","4.1s"]
+    ]
+
 if "messages" not in st.session_state:
     st.session_state.messages=[
       ("assistant","Hello! I'm your iConnect SA AI assistant. I can help you classify enquiries, draft responses and suggest the best support team."),
